@@ -14,6 +14,11 @@
 	compatible =  "siemens,iot2050", "ti,am654";
 	model = "Siemens IOT2050 Advanced Base Board";
 
+	aliases {
+		mmc0 = &sdhci1;
+		mmc1 = &sdhci0;
+	};
+
 	memory@80000000 {
 		device_type = "memory";
 		/* 2G RAM */
