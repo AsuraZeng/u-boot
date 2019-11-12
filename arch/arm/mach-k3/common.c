@@ -186,6 +186,15 @@ void __noreturn jump_to_image_no_args(struct spl_image_info *spl_image)
 	ret = rproc_start(1);
 	if (ret)
 		panic("%s: ATF failed to start on rproc (%d)\n", __func__, ret);
+
+	/*
+	 * Both cluster should be initialized (eg. frequency)
+	 */
+	ret = rproc_dev_init(2);
+	if (ret)
+		panic("%s: ATF failed to initialize on rproc (%d)\n", __func__,
+		      ret);
+
 	if (!(size > 0 && valid_elf_image(loadaddr))) {
 		debug("Shutting down...\n");
 		release_resources_for_core_shutdown();
