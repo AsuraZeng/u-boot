@@ -1,0 +1,78 @@
+# SPDX-License-Identifier: GPL-2.0+
+#
+# (C) Copyright 2018 Siemens AG
+#   Le Jin <le.jin@siemens.com>
+choice
+	prompt "IOT2050 based boards"
+	optional
+
+config TARGET_IOT2050_BASIC_A53
+	bool "IOT2050 basic running on A53"
+	select ARM64
+	select SOC_K3_AM6
+	select BOARD_LATE_INIT
+	imply IOT2050_I2C_BOARD_DETECT
+	select SYS_DISABLE_DCACHE_OPS
+
+config TARGET_IOT2050_ADVANCED_A53
+	bool "IOT2050 advanced running on A53"
+	select ARM64
+	select SOC_K3_AM6
+	select BOARD_LATE_INIT
+	imply IOT2050_I2C_BOARD_DETECT
+	select SYS_DISABLE_DCACHE_OPS
+
+config TARGET_IOT2050_BASIC_R5
+	bool "IOT2050 basic running on R5"
+	select CPU_V7R
+	select SYS_THUMB_BUILD
+	select SOC_K3_AM6
+	select K3_LOAD_SYSFW
+	select K3_AM654_DDRSS
+	imply SYS_K3_SPL_ATF
+	imply IOT2050_I2C_BOARD_DETECT
+
+config TARGET_IOT2050_ADVANCED_R5
+	bool "IOT2050 advanced running on R5"
+	select CPU_V7R
+	select SYS_THUMB_BUILD
+	select SOC_K3_AM6
+	select K3_LOAD_SYSFW
+	select K3_AM654_DDRSS
+	imply SYS_K3_SPL_ATF
+	imply IOT2050_I2C_BOARD_DETECT
+
+endchoice
+
+if (TARGET_IOT2050_BASIC_A53 || TARGET_IOT2050_ADVANCED_A53)
+
+config SYS_BOARD
+       default "iot2050"
+
+config SYS_VENDOR
+       default "siemens"
+
+config SYS_CONFIG_NAME
+       default "iot2050"
+
+source "board/siemens/common/Kconfig"
+
+endif
+
+if (TARGET_IOT2050_BASIC_R5 || TARGET_IOT2050_ADVANCED_R5)
+
+config SYS_BOARD
+       default "iot2050"
+
+config SYS_VENDOR
+       default "siemens"
+
+config SYS_CONFIG_NAME
+       default "iot2050"
+
+config SPL_LDSCRIPT
+	default "arch/arm/mach-omap2/u-boot-spl.lds"
+
+source "board/siemens/common/Kconfig"
+
+endif

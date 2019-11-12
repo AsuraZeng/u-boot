@@ -1,0 +1,72 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * (C) Copyright 2019 Siemens AG
+ */
+
+/dts-v1/;
+
+#include "k3-am654.dtsi"
+#include "iot2050-u-boot.dtsi"
+#include <dt-bindings/pinctrl/k3.h>
+#include "iot2050-common.dtsi"
+
+/ {
+	compatible =  "siemens,iot2050", "ti,am654";
+	model = "Siemens IOT2050 Basic Base Board";
+
+	memory@80000000 {
+		device_type = "memory";
+		/* 1G RAM */
+		reg = <0x00000000 0x80000000 0x00000000 0x40000000>,
+		      <0x00000008 0x80000000 0x00000000 0x00000000>;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		secure_ddr: secure_ddr@9e800000 {
+			reg = <0 0x9e800000 0 0x01800000>; /* for OP-TEE */
+			alignment = <0x1000>;
+			no-map;
+		};
+	};
+};
+
+/* eMMC */
+&sdhci0 {
+	status = "disabled";
+};
+
+&main_pmx0 {
+        main_uart0_pins_default: main_uart0_pins_default {
+                pinctrl-single,pins = <
+                        AM65X_IOPAD(0x01e4, PIN_INPUT, 0)    /* (AF11) UART0_RXD */
+                        AM65X_IOPAD(0x01e8, PIN_OUTPUT, 0)   /* (AE11) UART0_TXD */
+                        AM65X_IOPAD(0x01ec, PIN_INPUT, 0)    /* (AG11) UART0_CTSn */
+                        AM65X_IOPAD(0x01f0, PIN_OUTPUT, 0)   /* (AD11) UART0_RTSn */
+                        AM65X_IOPAD(0x0188, PIN_INPUT, 1)    /* (D25) UART0_DCDn */
+                        AM65X_IOPAD(0x018c, PIN_INPUT, 1)    /* (B26) UART0_DSRn */
+                        AM65X_IOPAD(0x0190, PIN_OUTPUT, 1)   /* (A24) UART0_DTRn */
+                        AM65X_IOPAD(0x0194, PIN_INPUT, 1)    /* (E24) UART0_RIN */
+                >;
+                u-boot,dm-spl;
+        };
+};
+
+&wkup_pmx0 {
+        main_uart0_mode_pins_default: main_uart0_mode_pins_default {
+                pinctrl-single,pins = <
+                        AM65X_WKUP_IOPAD(0x00c4, PIN_OUTPUT, 7)  /* (AD3) WKUP_GPIO0_5, serial mode switch0 */
+                        AM65X_WKUP_IOPAD(0x00c0, PIN_OUTPUT, 7)  /* (AC3) WKUP_GPIO0_4, serial mode switch1 */
+                        AM65X_WKUP_IOPAD(0x00cc, PIN_OUTPUT, 7)  /* (AC1) WKUP_GPIO0_7, 485 terminal resister */
+                        AM65X_WKUP_IOPAD(0x00c8, PIN_OUTPUT, 7)  /* (AC2) WKUP_GPIO0_6, 485 en */
+                >;
+                u-boot,dm-spl;
+        };
+};
+
+&main_uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_uart0_pins_default &main_uart0_mode_pins_default>;
+};

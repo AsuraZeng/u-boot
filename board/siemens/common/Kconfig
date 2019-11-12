@@ -1,0 +1,15 @@
+config IOT2050_I2C_BOARD_DETECT
+	bool "Support for Board detection for IOT2050 platforms"
+	help
+	   Support for detection board information on IOT2050
+	   Boards which have I2C based EEPROM detection
+
+config EEPROM_BUS_ADDRESS
+	int "Board EEPROM's I2C bus address"
+	range 0 8
+	default 2
+
+config EEPROM_CHIP_ADDRESS
+	hex "Board EEPROM's I2C chip address"
+	range 0 0xff
+	default 0x54

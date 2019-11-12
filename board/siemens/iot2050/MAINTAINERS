@@ -1,0 +1,7 @@
+IOT2050 BOARD
+M:	Le Jin <le.jin@siemens.com>
+S:	Maintained
+F:	board/siemens/iot2050/
+F:	include/configs/iot2050.h
+F:	configs/am65x_iot2050_a53_defconfig
+F:	configs/am65x_iot2050_r5_defconfig

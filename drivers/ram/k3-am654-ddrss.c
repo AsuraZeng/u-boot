@@ -138,6 +138,8 @@ static void am654_ddrss_ctrl_configuration(struct am654_ddrss_desc *ddrss)
 	ddrss_ctl_writel(DDRSS_DDRCTL_DRAMTMG3, tmg->ddrctl_dramtmg3);
 	ddrss_ctl_writel(DDRSS_DDRCTL_DRAMTMG4, tmg->ddrctl_dramtmg4);
 	ddrss_ctl_writel(DDRSS_DDRCTL_DRAMTMG5, tmg->ddrctl_dramtmg5);
+	ddrss_ctl_writel(DDRSS_DDRCTL_DRAMTMG6, tmg->ddrctl_dramtmg6);
+	ddrss_ctl_writel(DDRSS_DDRCTL_DRAMTMG7, tmg->ddrctl_dramtmg7);
 	ddrss_ctl_writel(DDRSS_DDRCTL_DRAMTMG8, tmg->ddrctl_dramtmg8);
 	ddrss_ctl_writel(DDRSS_DDRCTL_DRAMTMG9, tmg->ddrctl_dramtmg9);
 	ddrss_ctl_writel(DDRSS_DDRCTL_DRAMTMG11, tmg->ddrctl_dramtmg11);
@@ -167,6 +169,11 @@ static void am654_ddrss_ctrl_configuration(struct am654_ddrss_desc *ddrss)
 	ddrss_ctl_writel(DDRSS_DDRCTL_ADDRMAP9, map->ddrctl_addrmap9);
 	ddrss_ctl_writel(DDRSS_DDRCTL_ADDRMAP10, map->ddrctl_addrmap10);
 	ddrss_ctl_writel(DDRSS_DDRCTL_ADDRMAP11, map->ddrctl_addrmap11);
+
+	ddrss_ctl_writel(DDRSS_DDRCTL_DQMAP0, map->ddrctl_dqmap0);
+	ddrss_ctl_writel(DDRSS_DDRCTL_DQMAP1, map->ddrctl_dqmap1);
+	ddrss_ctl_writel(DDRSS_DDRCTL_DQMAP4, map->ddrctl_dqmap4);
+	ddrss_ctl_writel(DDRSS_DDRCTL_DQMAP5, map->ddrctl_dqmap5);
 
 	ddrss_ctl_writel(DDRSS_DDRCTL_ODTCFG, reg->ddrctl_odtcfg);
 	ddrss_ctl_writel(DDRSS_DDRCTL_ODTMAP, reg->ddrctl_odtmap);
@@ -205,7 +212,6 @@ static void am654_ddrss_phy_configuration(struct am654_ddrss_desc *ddrss)
 	struct ddrss_ddrphy_zq_params *zq = &ddrss->params.phy_zq;
 
 	debug("%s: DDR phy register configuration started\n", __func__);
-
 	ddrss_phy_writel(DDRSS_DDRPHY_PGCR0, cfg->ddrphy_pgcr0);
 	ddrss_phy_writel(DDRSS_DDRPHY_PGCR1, cfg->ddrphy_pgcr1);
 	ddrss_phy_writel(DDRSS_DDRPHY_PGCR2, cfg->ddrphy_pgcr2);
@@ -264,6 +270,16 @@ static void am654_ddrss_phy_configuration(struct am654_ddrss_desc *ddrss)
 	ddrss_phy_writel(DDRSS_DDRPHY_ACIOCR5, ioctl->ddrphy_aciocr5);
 	ddrss_phy_writel(DDRSS_DDRPHY_IOVCR0, ioctl->ddrphy_iovcr0);
 
+	ddrss_phy_writel(DDRSS_DDRPHY_DX2GCR0, cfg->ddrphy_dx2gcr0);
+	ddrss_phy_writel(DDRSS_DDRPHY_DX2GCR1, cfg->ddrphy_dx2gcr1);
+	ddrss_phy_writel(DDRSS_DDRPHY_DX2GCR2, cfg->ddrphy_dx2gcr2);
+	ddrss_phy_writel(DDRSS_DDRPHY_DX2GCR3, cfg->ddrphy_dx2gcr3);
+
+	ddrss_phy_writel(DDRSS_DDRPHY_DX3GCR0, cfg->ddrphy_dx3gcr0);
+	ddrss_phy_writel(DDRSS_DDRPHY_DX3GCR1, cfg->ddrphy_dx3gcr1);
+	ddrss_phy_writel(DDRSS_DDRPHY_DX3GCR2, cfg->ddrphy_dx3gcr2);
+	ddrss_phy_writel(DDRSS_DDRPHY_DX3GCR3, cfg->ddrphy_dx3gcr3);
+
 	ddrss_phy_writel(DDRSS_DDRPHY_DX4GCR0, cfg->ddrphy_dx4gcr0);
 	ddrss_phy_writel(DDRSS_DDRPHY_DX4GCR1, cfg->ddrphy_dx4gcr1);
 	ddrss_phy_writel(DDRSS_DDRPHY_DX4GCR2, cfg->ddrphy_dx4gcr2);
@@ -273,12 +289,14 @@ static void am654_ddrss_phy_configuration(struct am654_ddrss_desc *ddrss)
 	ddrss_phy_writel(DDRSS_DDRPHY_DX1GCR4, cfg->ddrphy_dx1gcr4);
 	ddrss_phy_writel(DDRSS_DDRPHY_DX2GCR4, cfg->ddrphy_dx2gcr4);
 	ddrss_phy_writel(DDRSS_DDRPHY_DX3GCR4, cfg->ddrphy_dx3gcr4);
+	ddrss_phy_writel(DDRSS_DDRPHY_DX4GCR4, cfg->ddrphy_dx4gcr4);
 
 	ddrss_phy_writel(DDRSS_DDRPHY_PGCR5, cfg->ddrphy_pgcr5);
 	ddrss_phy_writel(DDRSS_DDRPHY_DX0GCR5, cfg->ddrphy_dx0gcr5);
 	ddrss_phy_writel(DDRSS_DDRPHY_DX1GCR5, cfg->ddrphy_dx1gcr5);
 	ddrss_phy_writel(DDRSS_DDRPHY_DX2GCR5, cfg->ddrphy_dx2gcr5);
 	ddrss_phy_writel(DDRSS_DDRPHY_DX3GCR5, cfg->ddrphy_dx3gcr5);
+	ddrss_phy_writel(DDRSS_DDRPHY_DX4GCR5, cfg->ddrphy_dx4gcr5);
 
 	ddrss_phy_writel(DDRSS_DDRPHY_RANKIDR, DDRSS_DDRPHY_RANKIDR_RANK0);
 
