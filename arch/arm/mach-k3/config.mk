@@ -3,8 +3,6 @@
 # Copyright (C) 2017-2018 Texas Instruments Incorporated - http://www.ti.com/
 #	Lokesh Vutla <lokeshvutla@ti.com>
 
-ifdef CONFIG_SPL_BUILD
-
 # Openssl is required to generate x509 certificate.
 # Error out if openssl is not available.
 ifeq ($(shell which openssl),)
@@ -28,6 +26,19 @@ else
 KEY=$(patsubst "%",$(srctree)/%,$(CONFIG_SYS_K3_KEY))
 endif
 
+quiet_cmd_k3secureimg = SECURE  $@
+cmd_k3secureimg = \
+	$(if $2, \
+		$(srctree)/tools/k3_gen_x509_cert.sh -c 16 -b $< \
+					-o $@ -l $(CONFIG_SPL_TEXT_BASE) -k $(KEY) -t $2 \
+		$(if $(KBUILD_VERBOSE:1=), >/dev/null), \
+		$(srctree)/tools/k3_gen_x509_cert.sh -c 16 -b $< \
+					-o $@ -l $(CONFIG_SPL_TEXT_BASE) -k $(KEY) \
+		$(if $(KBUILD_VERBOSE:1=), >/dev/null) \
+	)
+
+ifdef CONFIG_SPL_BUILD
+
 # tiboot3.bin is mandated by ROM and ROM only supports R5 boot.
 # So restrict tiboot3.bin creation for CPU_V7R.
 ifdef CONFIG_CPU_V7R
@@ -40,9 +51,8 @@ image_check: $(obj)/u-boot-spl.bin FORCE
 		exit 1;							    \
 	fi
 
-tiboot3.bin: image_check FORCE
-	$(srctree)/tools/k3_gen_x509_cert.sh -c 16 -b $(obj)/u-boot-spl.bin \
-				-o $@ -l $(CONFIG_SPL_TEXT_BASE) -k $(KEY)
+tiboot3.bin: $(obj)/u-boot-spl.bin image_check FORCE
+	$(call if_changed,k3secureimg)
 
 ALL-y	+= tiboot3.bin
 endif

@@ -151,8 +151,9 @@ options_help[k]="key_file:file with key inside it. If not provided script genera
 options_help[o]="output_file:Name of the final output file. default to $OUTPUT"
 options_help[c]="core_id:target core id on which the image would be running. Default to $BOOTCORE"
 options_help[l]="loadaddr: Target load address of the binary in hex. Default to $LOADADDR"
+options_help[t]="template: Use predefined certificate template rather than generated one"
 
-while getopts "b:k:o:c:l:h" opt
+while getopts "b:k:o:c:l:t:h" opt
 do
 	case $opt in
 	b)
@@ -169,6 +170,9 @@ do
 	;;
 	c)
 		BOOTCORE=$OPTARG
+	;;
+	t)
+		TEMPLATE=$OPTARG
 	;;
 	h)
 		usage
@@ -233,7 +237,11 @@ gen_cert() {
 	openssl req -new -x509 -key $KEY -nodes -outform DER -out $CERT -config $TEMP_X509 -sha512
 }
 
-gen_template
+if [ -n "$TEMPLATE" ]; then
+	cp $TEMPLATE x509-template.txt
+else
+	gen_template
+fi
 gen_cert
 cat $CERT $BIN > $OUTPUT
 
