@@ -29,6 +29,10 @@
 #define DP83867_RGMIIDCTL	0x0086
 #define DP83867_IO_MUX_CFG	0x0170
 
+/*RJ45 led configuration*/
+#define DP83867_LEDCR_1      0x0018
+#define RJ45_LED_SETTING     0x665b
+
 #define DP83867_SW_RESET	BIT(15)
 #define DP83867_SW_RESTART	BIT(14)
 
@@ -382,6 +386,8 @@ static int dp83867_config(struct phy_device *phydev)
 	}
 
 	genphy_config_aneg(phydev);
+	phy_write_mmd_indirect(phydev, DP83867_LEDCR_1,
+					DP83867_DEVADDR, phydev->addr,RJ45_LED_SETTING);
 	return 0;
 
 err_out:
