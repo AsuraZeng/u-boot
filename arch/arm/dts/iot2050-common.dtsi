@@ -13,6 +13,22 @@
 		remoteproc0 = &mcu_r5fss0_core0;
 		remoteproc1 = &mcu_r5fss0_core1;
 	};
+
+	gpio-leds {
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+		pinctrl-0 = <&led_pins_default>;
+
+		status-led-red {
+			gpios = <&wkup_gpio0 32 GPIO_ACTIVE_HIGH>;
+			label = "redled";
+		};
+
+		status-led-green {
+			gpios = <&wkup_gpio0 24 GPIO_ACTIVE_HIGH>;
+			label = "greenled";
+		};
+	};
 };
 
 &wkup_pmx0 {
@@ -36,6 +52,13 @@
 		pinctrl-single,pins = <
 			AM65X_WKUP_IOPAD(0x00e8, PIN_INPUT, 0) /* (AD8) MCU_I2C0_SCL */
 			AM65X_WKUP_IOPAD(0x00ec, PIN_INPUT, 0) /* (AD7) MCU_I2C0_SDA */
+		>;
+	};
+	led_pins_default:led_pins_default{
+		pinctrl-single,pins = <
+			AM65X_WKUP_IOPAD(0x0050, PIN_OUTPUT, 7) /* (N2) WKUP_GPIO0_32 STATUS RED   LED */
+			AM65X_WKUP_IOPAD(0x0028, PIN_OUTPUT, 7) /* (R3) WKUP_GPIO0_22 USER   GREEN LED */
+			AM65X_WKUP_IOPAD(0x0030, PIN_OUTPUT, 7) /* (R5) WKUP_GPIO0_24 STATUS GREEN LED */
 		>;
 	};
 };

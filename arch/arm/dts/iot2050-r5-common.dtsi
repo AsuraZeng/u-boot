@@ -90,18 +90,6 @@
 		u-boot,dm-spl;
 	};
 
-	wkup_gpio0: wkup_gpio0@42110000 {
-		compatible = "ti,k2g-gpio", "ti,keystone-gpio";
-		reg = <0x42110000 0x100>;
-		gpio-controller;
-		#gpio-cells = <2>;
-		ti,ngpio = <56>;
-		ti,davinci-gpio-unbanked = <0>;
-		clocks = <&k3_clks 59 0>;
-		clock-names = "gpio";
-		u-boot,dm-spl;
-	};
-
 	clk_200mhz: dummy_clock {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
