@@ -2601,6 +2601,7 @@ int spi_nor_scan(struct spi_nor *nor)
 	if (JEDEC_MFR(info) == SNOR_MFR_ST ||
 	    JEDEC_MFR(info) == SNOR_MFR_MICRON ||
 	    JEDEC_MFR(info) == SNOR_MFR_SST ||
+		JEDEC_MFR(info) == SNOR_MFR_WINBOND ||
 			info->flags & SPI_NOR_HAS_LOCK) {
 		nor->flash_lock = stm_lock;
 		nor->flash_unlock = stm_unlock;
