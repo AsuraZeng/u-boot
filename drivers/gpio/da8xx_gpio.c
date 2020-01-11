@@ -15,6 +15,8 @@
 
 #include "da8xx_gpio.h"
 
+static int _gpio_set_value(struct davinci_gpio *bank, unsigned int gpio, int value);
+
 #ifndef CONFIG_DM_GPIO
 #include <asm/arch/hardware.h>
 #include <asm/arch/davinci_misc.h>
@@ -341,6 +343,13 @@ int gpio_free(unsigned int gpio)
 	return 0;
 }
 #endif
+
+static int _gpio_direction_output(struct davinci_gpio *bank, unsigned int gpio, int value)
+{
+	clrbits_le32(&bank->dir, 1U << GPIO_BIT(gpio));
+	_gpio_set_value(bank, (gpio & 0x1f), value);
+	return 0;
+}
 
 static int _gpio_direction_input(struct davinci_gpio *bank, unsigned int gpio)
 {
