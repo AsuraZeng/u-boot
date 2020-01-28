@@ -2797,19 +2797,14 @@ int mmc_get_op_cond(struct mmc *mmc)
 	}
 	if (err)
 		return err;
-
 #if CONFIG_IS_ENABLED(DM_MMC)
-	/*
-	 * Re-initialization is needed to clear old configuration for
-	 * mmc rescan.
-	 */
-	err = mmc_reinit(mmc);
-#else
-	/* made sure it's not NULL earlier */
-	err = mmc->cfg->ops->init(mmc);
+	struct dm_mmc_ops *ops = mmc_get_ops(mmc->dev);
+	if (ops->init) {
+		err = ops->init(mmc->dev);
+		if (err)
+			return err;
+	}
 #endif
-	if (err)
-		return err;
 	mmc->ddr_mode = 0;
 
 retry:

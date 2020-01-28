@@ -427,6 +427,13 @@ struct mmc;
 #if CONFIG_IS_ENABLED(DM_MMC)
 struct dm_mmc_ops {
 	/**
+	 * init() - platform specific initialization for the host controller
+	 *
+	 * @dev:	Device to init
+	 * @return 0 if Ok, -ve if error
+	 */
+	int (*init)(struct udevice *dev);
+	/**
 	 * deferred_probe() - Some configurations that need to be deferred
 	 * to just before enumerating the device
 	 *
