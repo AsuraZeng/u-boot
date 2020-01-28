@@ -238,8 +238,8 @@
 		ti,otap-del-sel-legacy = <0x0>;
 		ti,otap-del-sel-mmc-hs = <0x0>;
 		ti,otap-del-sel-ddr52 = <0x5>;
-		ti,otap-del-sel-hs200 = <0x6>;
-		ti,otap-del-sel-hs400 = <0x0>;
+		ti,otap-del-sel-hs200 = <0x2>;
+		ti,otap-del-sel-hs400 = <0x2>;
 	};
 
 	main_sdhci1: sdhci@4fb0000 {
