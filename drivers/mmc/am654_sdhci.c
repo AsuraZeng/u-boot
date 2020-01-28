@@ -83,6 +83,7 @@ struct am654_sdhci_plat {
 #define DLL_PRESENT	(1 << 0)
 #define IOMUX_PRESENT	(1 << 1)
 #define FREQSEL_2_BIT	(1 << 2)
+#define STRBSEL_4_BIT	(1 << 3)
 	bool dll_on;
 };
 
@@ -141,6 +142,17 @@ static int am654_sdhci_set_ios_post(struct sdhci_host *host)
 		mask = OTAPDLYENA_MASK | OTAPDLYSEL_MASK;
 		val = (1 << OTAPDLYENA_SHIFT) |
 		      (plat->otap_del_sel << OTAPDLYSEL_SHIFT);
+
+		/* Write to STRBSEL for HS400 speed mode */
+		if (host->mmc->selected_mode == MMC_HS_400) {
+			if (plat->flags & STRBSEL_4_BIT)
+				mask |= STRBSEL_4BIT_MASK;
+			else
+				mask |= STRBSEL_8BIT_MASK;
+
+			val |= plat->strb_sel << STRBSEL_SHIFT;
+		}
+
 		regmap_update_bits(plat->base, PHY_CTRL4, mask, val);
 
 		if (plat->flags & FREQSEL_2_BIT) {
@@ -199,7 +211,7 @@ const struct sdhci_ops am654_sdhci_ops = {
 
 const struct am654_driver_data am654_drv_data = {
 	.ops = &am654_sdhci_ops,
-	.flags = DLL_PRESENT | IOMUX_PRESENT | FREQSEL_2_BIT,
+	.flags = DLL_PRESENT | IOMUX_PRESENT | FREQSEL_2_BIT | STRBSEL_4_BIT,
 };
 
 const struct am654_driver_data j721e_8bit_drv_data = {
@@ -463,6 +475,8 @@ static int am654_sdhci_ofdata_to_platdata(struct udevice *dev)
 			return -EINVAL;
 		}
 	}
+
+	dev_read_u32(dev, "ti,strobe-sel", &plat->strb_sel);
 
 	ret = mmc_of_parse(dev, cfg);
 	if (ret)
