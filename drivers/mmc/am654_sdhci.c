@@ -82,8 +82,6 @@ struct am654_sdhci_plat {
 	u32 flags;
 #define DLL_PRESENT	(1 << 0)
 #define IOMUX_PRESENT	(1 << 1)
-#define FREQSEL_2_BIT	(1 << 2)
-#define STRBSEL_4_BIT	(1 << 3)
 	bool dll_on;
 };
 
@@ -212,7 +210,7 @@ const struct sdhci_ops am654_sdhci_ops = {
 
 const struct am654_driver_data am654_drv_data = {
 	.ops = &am654_sdhci_ops,
-	.flags = DLL_PRESENT,
+	.flags = DLL_PRESENT | IOMUX_PRESENT,
 };
 
 const struct am654_driver_data j721e_8bit_drv_data = {
@@ -226,6 +224,7 @@ const struct sdhci_ops j721e_4bit_sdhci_ops = {
 
 const struct am654_driver_data j721e_4bit_drv_data = {
 	.ops = &j721e_4bit_sdhci_ops,
+	.flags = IOMUX_PRESENT,
 };
 
 int am654_sdhci_init(struct am654_sdhci_plat *plat)
