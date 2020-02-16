@@ -16,6 +16,7 @@
 #include <asm/io.h>
 #include <dm/uclass.h>
 #include <led.h>
+#include <asm/gpio.h>
 /*
  * Board-specific Platform code can reimplement show_boot_progress () if needed
  */
@@ -74,8 +75,10 @@ void main_loop(void)
 	if (cli_process_fdt(&s))
 		cli_secure_boot_cmd(s);
 
-	autoboot_command(s);
+	/* change CTRL_MMR register to let serdes0 not output USB3.0 signals. */
+	writel(0x3, 0x00104080);
 
+	autoboot_command(s);
 #if defined(CONFIG_TARGET_IOT2050_ADVANCED_A53) || defined(CONFIG_TARGET_IOT2050_BASIC_A53)
 	/* Turn on the LED when OS is not started  */
 	iot2050_show_set_light("redled",LEDST_ON);
