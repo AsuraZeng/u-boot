@@ -2797,14 +2797,7 @@ int mmc_get_op_cond(struct mmc *mmc)
 	}
 	if (err)
 		return err;
-#if CONFIG_IS_ENABLED(DM_MMC)
-	struct dm_mmc_ops *ops = mmc_get_ops(mmc->dev);
-	if (ops->init) {
-		err = ops->init(mmc->dev);
-		if (err)
-			return err;
-	}
-#endif
+
 	mmc->ddr_mode = 0;
 
 retry:
@@ -2855,10 +2848,18 @@ int mmc_start_init(struct mmc *mmc)
 	 * timings.
 	 */
 	mmc->host_caps = mmc->cfg->host_caps | MMC_CAP(MMC_LEGACY) |
-			 MMC_CAP(MMC_LEGACY) | MMC_MODE_1BIT;
+			 MMC_MODE_1BIT;
+
 #if CONFIG_IS_ENABLED(DM_MMC)
-	mmc_deferred_probe(mmc);
+	struct dm_mmc_ops *ops = mmc_get_ops(mmc->dev);
+
+	if (ops->init) {
+		err = ops->init(mmc->dev);
+		if (err)
+			return err;
+	}
 #endif
+
 #if !defined(CONFIG_MMC_BROKEN_CD)
 	no_card = mmc_getcd(mmc) == 0;
 #else
