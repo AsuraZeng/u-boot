@@ -9,22 +9,9 @@
 
 #define SOC_MAX_STR_SIZE	128
 
-/**
- * struct soc_attr - Contains SoC identify information to be used in
- *		     SoC matching. An array of these structs
- *		     representing different SoCs can be passed to
- *		     soc_device_match and the struct matching the SoC
- *		     in use will be returned.
- *
- * @family   - Name of SoC family that can include multiple related SoC
- *	       variants. Example: am33
- * @machine  - Name of a specific SoC. Example: am3352
- * @revision - Name of a specific SoC revision. Example: SR1.1
- * @data     - A pointer to user data for the SoC variant
- */
-struct soc_attr {
-	const char *family;
+struct soc_device_attribute {
 	const char *machine;
+	const char *family;
 	const char *revision;
 	const void *data;
 };
@@ -63,7 +50,6 @@ struct soc_ops {
 
 #define soc_get_ops(dev)        ((struct soc_ops *)(dev)->driver->ops)
 
-#ifdef CONFIG_SOC_DEVICE
 /**
  * soc_get() - Return the soc device for the soc in use.
  * @devp: Pointer to structure to receive the soc device.
@@ -106,40 +92,13 @@ int soc_get_revision(struct udevice *dev, char *buf, int size);
 int soc_get_family(struct udevice *dev, char *buf, int size);
 
 /**
- * soc_device_match() - Return match from an array of soc_attr
+ * soc_device_match() - Return match from an array of soc_device_attribute
  * @matches:	Array with any combination of family, revision or machine set
  *
  * Return: Pointer to struct from matches array with set attributes matching
- *	   those provided by the soc device, or NULL if no match found.
+ *	   those provided by the soc device.
  */
-const struct soc_attr *
-soc_device_match(const struct soc_attr *matches);
+const struct soc_device_attribute *
+soc_device_match(const struct soc_device_attribute *matches);
 
-#else
-static inline int soc_get(struct udevice **devp)
-{
-	return -ENOSYS;
-}
-
-static inline int soc_get_machine(struct udevice *dev, char *buf, int size)
-{
-	return -ENOSYS;
-}
-
-static inline int soc_get_revision(struct udevice *dev, char *buf, int size)
-{
-	return -ENOSYS;
-}
-
-static inline int soc_get_family(struct udevice *dev, char *buf, int size)
-{
-	return -ENOSYS;
-}
-
-static inline const struct soc_attr *
-soc_device_match(const struct soc_attr *matches)
-{
-	return NULL;
-}
 #endif
-#endif /* _SOC_H */

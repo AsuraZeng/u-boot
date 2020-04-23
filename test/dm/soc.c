@@ -21,13 +21,13 @@ static int dm_test_soc(struct unit_test_state *uts)
 {
 	struct udevice *dev;
 	char text[128];
-	const struct soc_attr *soc_data;
+	const struct soc_device_attribute *soc_data;
 	const struct sb_soc_data *match_data;
 
 	static const struct sb_soc_data soc_sandbox1_sr10_data = { 0x91919191 };
 	static const struct sb_soc_data soc_sandbox123_data    = { 0x84848484 };
 
-	static const struct soc_attr sb_soc_devices_full[] = {
+	static const struct soc_device_attribute sb_soc_devices_full[] = {
 		{
 			.family = "SANDBOX0xx",
 			.machine = "SANDBOX012",
@@ -55,7 +55,7 @@ static int dm_test_soc(struct unit_test_state *uts)
 		{ /* sentinel */ }
 	};
 
-	static const struct soc_attr sb_soc_devices_partial[] = {
+	static const struct soc_device_attribute sb_soc_devices_partial[] = {
 		{
 			.family = "SANDBOX0xx",
 			.revision = "1.0",
@@ -74,7 +74,7 @@ static int dm_test_soc(struct unit_test_state *uts)
 		{ /* sentinel */ }
 	};
 
-	static const struct soc_attr sb_soc_devices_nomatch[] = {
+	static const struct soc_device_attribute sb_soc_devices_nomatch[] = {
 		{
 			.family = "SANDBOX0xx",
 			.revision = "1.0",

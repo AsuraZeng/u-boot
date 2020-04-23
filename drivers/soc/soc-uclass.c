@@ -46,8 +46,8 @@ int soc_get_revision(struct udevice *dev, char *buf, int size)
 	return ops->get_revision(dev, buf, size);
 }
 
-const struct soc_attr *
-soc_device_match(const struct soc_attr *matches)
+const struct soc_device_attribute *
+soc_device_match(const struct soc_device_attribute *matches)
 {
 	bool match;
 	struct udevice *soc;

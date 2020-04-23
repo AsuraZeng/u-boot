@@ -197,7 +197,7 @@ struct phy_ops omap_usb2_phy_ops = {
 	.exit = omap_usb2_phy_exit,
 };
 
-static const struct soc_attr am65x_sr10_soc_devices[] = {
+static const struct soc_device_attribute am65x_sr10_soc_devices[] = {
 	{ .family = "AM65X", .revision = "SR1.0" },
 	{ /* sentinel */ }
 };
