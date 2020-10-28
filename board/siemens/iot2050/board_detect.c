@@ -11,7 +11,7 @@
 #include <asm/omap_common.h>
 #include <dm/uclass.h>
 #include <i2c.h>
-#include <environment.h>
+// #include <environment.h>
 #include <version.h>
 
 #include "board_detect.h"

@@ -831,7 +831,7 @@ dtb-$(CONFIG_TARGET_STM32MP1) += \
 	stm32mp157c-ed1.dtb \
 	stm32mp157c-ev1.dtb
 
-dtb-$(CONFIG_SOC_K3_AM6) += k3-am654-pcie-usb2.dtbo k3-am654-idk.dtbo \
+dtb-$(CONFIG_SOC_K3_AM6) += \
 		iot2050-r5-basic.dtb iot2050-basic.dtb \
 		iot2050-r5-advanced.dtb iot2050-advanced.dtb
 

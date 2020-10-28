@@ -11,19 +11,19 @@
 #include <linux/sizes.h>
 #include <environment/ti/mmc.h>
 
-#define CONFIG_ENV_SIZE			(128 << 10)
+// #define CONFIG_ENV_SIZE			(128 << 10)
 
 /* DDR Configuration */
 #define CONFIG_SYS_SDRAM_BASE1		0x880000000
 
 /* SPL Loader Configuration */
 #if defined(CONFIG_TARGET_IOT2050_BASIC_A53) || defined(CONFIG_TARGET_IOT2050_ADVANCED_A53)
-#define CONFIG_SPL_TEXT_BASE		0x80080000
+// #define CONFIG_SPL_TEXT_BASE		0x80080000
 #define CONFIG_SYS_INIT_SP_ADDR         (CONFIG_SPL_TEXT_BASE +	\
 					 CONFIG_SYS_K3_NON_SECURE_MSRAM_SIZE)
-#define CONFIG_SYS_SPI_U_BOOT_OFFS	0x280000
+// #define CONFIG_SYS_SPI_U_BOOT_OFFS	0x280000
 #else
-#define CONFIG_SPL_TEXT_BASE		0x41c00000
+//#define CONFIG_SPL_TEXT_BASE		0x41c00000
 /*
  * Maximum size in memory allocated to the SPL BSS. Keep it as tight as
  * possible (to allow the build to go through), as this directly affects
@@ -45,7 +45,7 @@
 /* Configure R5 SPL post-relocation malloc pool in DDR */
 #define CONFIG_SYS_SPL_MALLOC_START	0x84000000
 #define CONFIG_SYS_SPL_MALLOC_SIZE	SZ_16M
-#define CONFIG_SYS_SPI_U_BOOT_OFFS	0x80000
+//#define CONFIG_SYS_SPI_U_BOOT_OFFS	0x80000
 #endif
 
 #ifdef CONFIG_SYS_K3_SPL_ATF
@@ -202,15 +202,15 @@
 #endif
 
 /* Non Kconfig SF configs */
-#define CONFIG_SF_DEFAULT_SPEED		0
-#define CONFIG_SF_DEFAULT_MODE		0
-#ifdef CONFIG_ENV_IS_IN_SPI_FLASH
-#define CONFIG_ENV_OFFSET		0x680000
-#define CONFIG_ENV_SECT_SIZE		0x20000
-#define CONFIG_ENV_OFFSET_REDUND        (CONFIG_ENV_OFFSET + \
-					 CONFIG_ENV_SECT_SIZE)
-#define CONFIG_SYS_REDUNDAND_ENVIRONMENT
-#endif
+// #define CONFIG_SF_DEFAULT_SPEED		0
+// #define CONFIG_SF_DEFAULT_MODE		0
+// #ifdef CONFIG_ENV_IS_IN_SPI_FLASH
+// #define CONFIG_ENV_OFFSET		0x680000
+// #define CONFIG_ENV_SECT_SIZE		0x20000
+// #define CONFIG_ENV_OFFSET_REDUND        (CONFIG_ENV_OFFSET + 
+// 					 CONFIG_ENV_SECT_SIZE)
+// #define CONFIG_SYS_REDUNDAND_ENVIRONMENT
+// #endif
 
 /* Now for the remaining common defines */
 #include <configs/ti_armv7_common.h>

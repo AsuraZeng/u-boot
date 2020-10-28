@@ -386,8 +386,7 @@ static int dp83867_config(struct phy_device *phydev)
 	}
 
 	genphy_config_aneg(phydev);
-	phy_write_mmd_indirect(phydev, DP83867_LEDCR_1,
-					DP83867_DEVADDR, phydev->addr,RJ45_LED_SETTING);
+	phy_write_mmd(phydev,DP83867_DEVADDR, DP83867_LEDCR_1,RJ45_LED_SETTING);
 	return 0;
 
 err_out:
