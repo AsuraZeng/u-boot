@@ -10,4 +10,4 @@
 #
 
 obj-y	+= board.o
-obj-${CONFIG_IOT2050_I2C_BOARD_DETECT} += board_detect.o
+obj-y += board_detect.o

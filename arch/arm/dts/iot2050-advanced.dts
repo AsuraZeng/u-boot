@@ -5,10 +5,8 @@
 
 /dts-v1/;
 
-#include "k3-am654.dtsi"
-#include "iot2050-u-boot.dtsi"
-#include <dt-bindings/pinctrl/k3.h>
 #include "iot2050-common.dtsi"
+#include "iot2050-boot-image.dtsi"
 
 / {
 	compatible =  "siemens,iot2050", "ti,am654";
@@ -24,17 +22,6 @@
 		/* 2G RAM */
 		reg = <0x00000000 0x80000000 0x00000000 0x80000000>,
 		      <0x00000008 0x80000000 0x00000000 0x00000000>;
-	};
-
-	reserved-memory {
-		#address-cells = <2>;
-		#size-cells = <2>;
-		ranges;
-		secure_ddr: secure_ddr@9e800000 {
-			reg = <0 0x9e800000 0 0x01800000>; /* for OP-TEE */
-			alignment = <0x1000>;
-			no-map;
-		};
 	};
 };
 
