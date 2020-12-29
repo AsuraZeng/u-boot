@@ -146,15 +146,11 @@
 
 	sdhci1: sdhci@04FA0000 {
 		compatible = "ti,am654-sdhci-5.1";
-		reg = <0x0 0x4FA0000 0x0 0x1000>,
-		      <0x0 0x4FB0000 0x0 0x400>;
+		reg = <0x0 0x4fa0000 0x0 0x260>, <0x0 0x4fb0000 0x0 0x134>;
 		power-domains = <&k3_pds 48 TI_SCI_PD_EXCLUSIVE>;
 		clocks = <&k3_clks 48 0>, <&k3_clks 48 1>;
 		clock-names = "clk_ahb", "clk_xin";
-		max-frequency = <25000000>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&main_mmc1_pins_default>;
-		sdhci-caps-mask = <0x7 0x200000>;
+		interrupts = <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>;
 		ti,otap-del-sel-legacy = <0x0>;
 		ti,otap-del-sel-mmc-hs = <0x0>;
 		ti,otap-del-sel-sd-hs = <0x0>;
@@ -165,9 +161,9 @@
 		ti,otap-del-sel-ddr50 = <0x4>;
 		ti,otap-del-sel-ddr52 = <0x4>;
 		ti,otap-del-sel-hs200 = <0x7>;
+		ti,clkbuf-sel = <0x7>;
 		ti,trm-icp = <0x8>;
-		ti,driver-strength-ohm = <50>;
-		status = "okay";
+		dma-coherent;
 	};
 };
 
