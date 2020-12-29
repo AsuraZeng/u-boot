@@ -62,7 +62,7 @@
 			};
 
 			configurations {
-				default = "conf-iot2050-basic";
+				default = "conf-iot2050-advanced";
 			
 				conf-iot2050-basic {
 					description = "iot2050-basic";

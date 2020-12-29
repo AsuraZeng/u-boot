@@ -49,8 +49,9 @@ static bool board_is_advanced(void)
 {
 	struct iot2050_info *info = IOT2050_INFO_DATA;
 
-	return info->magic == IOT2050_INFO_MAGIC &&
-		!strcmp((char *)info->name, "IOT2050-ADVANCED");
+	// return info->magic == IOT2050_INFO_MAGIC &&
+	// 	!strcmp((char *)info->name, "IOT2050-ADVANCED");
+	return true;
 }
 
 void set_board_info_env(void)
