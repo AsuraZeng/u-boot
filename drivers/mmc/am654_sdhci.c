@@ -14,6 +14,7 @@
 #include <sdhci.h>
 #include <soc.h>
 #include "mmc_private.h"
+#include <dm/device_compat.h>
 
 /* CTL_CFG Registers */
 #define CTL_CFG_2		0x14

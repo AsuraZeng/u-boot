@@ -17,6 +17,9 @@
 #include <sdhci.h>
 #include <dm.h>
 #include <power/regulator.h>
+#include <linux/delay.h>
+#include <linux/dma-mapping.h>
+#include <phys2bus.h>
 
 #if defined(CONFIG_FIXED_SDHCI_ALIGNED_BUFFER)
 void *aligned_buffer = (void *)CONFIG_FIXED_SDHCI_ALIGNED_BUFFER;
