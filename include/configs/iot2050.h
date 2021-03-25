@@ -31,6 +31,9 @@
 	"ramdisk_addr_r=0x81000000\0"					\
 	"fdt_addr_r=0x82000000\0"					\
 	"overlay_addr_r=0x83000000\0"					\
+	"load_icssg0_pru1_fw=sf read $loadaddr 0x7d0000 0x8000; rproc load 4 $loadaddr 0x8000\0" \
+	"load_icssg0_rtu1_fw=sf read $loadaddr 0x7f0000 0x8000; rproc load 5 $loadaddr 0x8000\0" \
+	"init_icssg0=rproc init; sf probe; run load_icssg0_pru1_fw; run load_icssg0_rtu1_fw\0" \
 	"usb_pgood_delay=900\0"
 
 #ifndef CONFIG_SPL_BUILD
