@@ -28,7 +28,7 @@
 			type = "flat_dt";
 			arch = "arm64";
 			compression = "none";
-			data = /incbin/("arch/arm/dts/iot2050-basic.dtb");
+			data = /incbin/("arch/arm/dts/k3-am6528-iot2050-basic.dtb");
 		};
 
 		fdt-iot2050-advanced {
@@ -36,7 +36,7 @@
 			type = "flat_dt";
 			arch = "arm64";
 			compression = "none";
-			data = /incbin/("arch/arm/dts/iot2050-advanced.dtb");
+			data = /incbin/("arch/arm/dts/k3-am6548-iot2050-advanced.dtb");
 		};
 	};
 

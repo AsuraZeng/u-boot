@@ -12,7 +12,7 @@ config TARGET_IOT2050_A53
 	select SOC_K3_AM6
 	select BOARD_LATE_INIT
 	select SYS_DISABLE_DCACHE_OPS
-	select BINMAN
+	# select BINMAN
 
 if TARGET_IOT2050_A53
 
