@@ -1166,7 +1166,9 @@ static int uncompress_blob(const void *src, ulong sz_src, void **dstp)
 	else if (CONFIG_IS_ENABLED(LZO) && lzo)
 		rc = lzop_decompress(src, sz_in, dst, &sz_out);
 	else
-		hang();
+			printf("%d \n",__LINE__);
+						printf("10");
+			hang();
 
 	if (rc < 0) {
 		/* not a valid compressed blob */

@@ -163,6 +163,7 @@ static void setup_am654_navss_northbridge(void)
 
 void board_init_f(ulong dummy)
 {
+	printf("board inif f am6\n");
 #if defined(CONFIG_K3_LOAD_SYSFW) || defined(CONFIG_K3_AM654_DDRSS)
 	struct udevice *dev;
 	size_t pool_size;
@@ -184,7 +185,7 @@ void board_init_f(ulong dummy)
 	disable_linefill_optimization();
 	setup_k3_mpu_regions();
 #endif
-
+	printf("spl early init \n");
 	/* Init DM early in-order to invoke system controller */
 	spl_early_init();
 
@@ -197,7 +198,7 @@ void board_init_f(ulong dummy)
 	 */
 	early_console_init();
 #endif
-
+	printf("board inif f am6\n");
 #ifdef CONFIG_K3_LOAD_SYSFW
 	/*
 	 * Initialize an early full malloc environment. Do so by allocating a
@@ -243,13 +244,13 @@ void board_init_f(ulong dummy)
 	/* Prepare console output */
 	preloader_console_init();
 #endif
-
+	printf("gd flags %x \n",gd->flags);
 	/* Output System Firmware version info */
 	k3_sysfw_print_ver();
 
 	/* Perform EEPROM-based board detection */
 	do_board_detect();
-
+	printf("for testing\n");
 #if defined(CONFIG_CPU_V7R) && defined(CONFIG_K3_AVS0)
 	ret = uclass_get_device_by_driver(UCLASS_MISC, DM_GET_DRIVER(k3_avs),
 					  &dev);
@@ -262,6 +263,7 @@ void board_init_f(ulong dummy)
 	if (ret)
 		panic("DRAM init failed: %d\n", ret);
 #endif
+	// spl_enable_dcache();
 }
 
 u32 spl_boot_mode(const u32 boot_device)

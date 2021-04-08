@@ -32,7 +32,7 @@ static const struct driver_info root_info = {
 struct udevice *dm_root(void)
 {
 	if (!gd->dm_root) {
-		dm_warn("Virtual root driver does not exist!\n");
+		printf("Virtual root driver does not exist!\n");
 		return NULL;
 	}
 
@@ -132,9 +132,9 @@ void fix_devices(void)
 int dm_init(bool of_live)
 {
 	int ret;
-
+	printf("dm init\n");
 	if (gd->dm_root) {
-		dm_warn("Virtual root driver already exists!\n");
+		printf("Virtual root driver already exists!\n");
 		return -EINVAL;
 	}
 	INIT_LIST_HEAD(&DM_UCLASS_ROOT_NON_CONST);
@@ -187,7 +187,7 @@ int dm_scan_platdata(bool pre_reloc_only)
 
 	ret = lists_bind_drivers(DM_ROOT_NON_CONST, pre_reloc_only);
 	if (ret == -ENOENT) {
-		dm_warn("Some drivers were not found\n");
+		printf("Some drivers were not found\n");
 		ret = 0;
 	}
 
@@ -205,7 +205,7 @@ static int dm_scan_fdt_live(struct udevice *parent,
 	for (np = node_parent->child; np; np = np->sibling) {
 		/* "chosen" node isn't a device itself but may contain some: */
 		if (!strcmp(np->name, "chosen")) {
-			pr_debug("parsing subnodes of \"chosen\"\n");
+			printf("parsing subnodes of \"chosen\"\n");
 
 			err = dm_scan_fdt_live(parent, np, pre_reloc_only);
 			if (err && !ret)
@@ -214,19 +214,19 @@ static int dm_scan_fdt_live(struct udevice *parent,
 		}
 
 		if (!of_device_is_available(np)) {
-			pr_debug("   - ignoring disabled device\n");
+			printf("   - ignoring disabled device\n");
 			continue;
 		}
 		err = lists_bind_fdt(parent, np_to_ofnode(np), NULL,
 				     pre_reloc_only);
 		if (err && !ret) {
 			ret = err;
-			debug("%s: ret=%d\n", np->name, ret);
+			printf("%s: ret=%d\n", np->name, ret);
 		}
 	}
 
 	if (ret)
-		dm_warn("Some drivers failed to bind\n");
+		printf("Some drivers failed to bind\n");
 
 	return ret;
 }
@@ -262,7 +262,7 @@ static int dm_scan_fdt_node(struct udevice *parent, const void *blob,
 		 */
 		if (!strcmp(node_name, "chosen") ||
 		    !strcmp(node_name, "firmware")) {
-			pr_debug("parsing subnodes of \"%s\"\n", node_name);
+			printf("parsing subnodes of \"%s\"\n", node_name);
 
 			err = dm_scan_fdt_node(parent, blob, offset,
 					       pre_reloc_only);
@@ -272,19 +272,19 @@ static int dm_scan_fdt_node(struct udevice *parent, const void *blob,
 		}
 
 		if (!fdtdec_get_is_enabled(blob, offset)) {
-			pr_debug("   - ignoring disabled device\n");
+			printf("   - ignoring disabled device\n");
 			continue;
 		}
 		err = lists_bind_fdt(parent, offset_to_ofnode(offset), NULL,
 				     pre_reloc_only);
 		if (err && !ret) {
 			ret = err;
-			debug("%s: ret=%d\n", node_name, ret);
+			printf("%s: ret=%d\n", node_name, ret);
 		}
 	}
 
 	if (ret)
-		dm_warn("Some drivers failed to bind\n");
+		printf("Some drivers failed to bind\n");
 
 	return ret;
 }
@@ -306,12 +306,15 @@ int dm_scan_fdt_dev(struct udevice *dev)
 
 int dm_scan_fdt(const void *blob, bool pre_reloc_only)
 {
+	printf("dm_scan_fdt \n");
 #if CONFIG_IS_ENABLED(OF_LIVE)
+	printf("dm_scan_fdt 1\n");
 	if (of_live_active())
 		return dm_scan_fdt_live(gd->dm_root, gd->of_root,
 					pre_reloc_only);
 	else
 #endif
+	printf("dm_scan_fdt 2 \n");
 	return dm_scan_fdt_node(gd->dm_root, blob, 0, pre_reloc_only);
 }
 
@@ -337,19 +340,19 @@ int dm_extended_scan_fdt(const void *blob, bool pre_reloc_only)
 
 	ret = dm_scan_fdt(blob, pre_reloc_only);
 	if (ret) {
-		debug("dm_scan_fdt() failed: %d\n", ret);
+		printf("dm_scan_fdt() failed: %d\n", ret);
 		return ret;
 	}
 
 	ret = dm_scan_fdt_ofnode_path("/clocks", pre_reloc_only);
 	if (ret) {
-		debug("scan for /clocks failed: %d\n", ret);
+		printf("scan for /clocks failed: %d\n", ret);
 		return ret;
 	}
 
 	ret = dm_scan_fdt_ofnode_path("/firmware", pre_reloc_only);
 	if (ret)
-		debug("scan for /firmware failed: %d\n", ret);
+		printf("scan for /firmware failed: %d\n", ret);
 
 	return ret;
 }
@@ -366,19 +369,19 @@ int dm_init_and_scan(bool pre_reloc_only)
 
 	ret = dm_init(IS_ENABLED(CONFIG_OF_LIVE));
 	if (ret) {
-		debug("dm_init() failed: %d\n", ret);
+		printf("dm_init() failed: %d\n", ret);
 		return ret;
 	}
 	ret = dm_scan_platdata(pre_reloc_only);
 	if (ret) {
-		debug("dm_scan_platdata() failed: %d\n", ret);
+		printf("dm_scan_platdata() failed: %d\n", ret);
 		return ret;
 	}
 
 	if (CONFIG_IS_ENABLED(OF_CONTROL) && !CONFIG_IS_ENABLED(OF_PLATDATA)) {
 		ret = dm_extended_scan_fdt(gd->fdt_blob, pre_reloc_only);
 		if (ret) {
-			debug("dm_extended_scan_dt() failed: %d\n", ret);
+			printf("dm_extended_scan_dt() failed: %d\n", ret);
 			return ret;
 		}
 	}

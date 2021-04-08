@@ -301,6 +301,7 @@ static int initr_dm(void)
 	int ret;
 
 	/* Save the pre-reloc driver model and start a new one */
+	printf("Save the pre-reloc driver model and start a new one \n");
 	gd->dm_root_f = gd->dm_root;
 	gd->dm_root = NULL;
 #ifdef CONFIG_TIMER
@@ -870,8 +871,11 @@ void board_init_r(gd_t *new_gd, ulong dest_addr)
 #endif
 
 	if (initcall_run_list(init_sequence_r))
+	{
+		printf("%d \n",__LINE__);
+					printf("4");
 		hang();
-
+	}
 	/* NOTREACHED - run_main_loop() does not return */
 	hang();
 }
