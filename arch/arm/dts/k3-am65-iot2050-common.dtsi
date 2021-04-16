@@ -91,20 +91,12 @@
 		sram = <&icssg0_sram>;
 		clocks = <&k3_clks 62 3>;
 		clock-names = "mdio_fck";
-		prus = <&pru0_0>, <&rtu0_0>, <&tx_pru0_0>,
-			<&pru0_1>, <&rtu0_1>, <&tx_pru0_1>;
-		firmware-name = "ti-pruss/am65x-sr2-pru0-prueth-fw.elf",
-				"ti-pruss/am65x-sr2-rtu0-prueth-fw.elf",
-				"ti-pruss/am65x-sr2-txpru0-prueth-fw.elf",
-				"ti-pruss/am65x-sr2-pru1-prueth-fw.elf",
-				"ti-pruss/am65x-sr2-rtu1-prueth-fw.elf",
-				"ti-pruss/am65x-sr2-txpru1-prueth-fw.elf";
-		ti,pruss-gp-mux-sel = <2>,      /* MII mode */
-						<2>,
-						<2>,
-						<2>,	/* MII mode */
-						<2>,
-						<2>;
+
+		prus = <&pru0_0>, <&rtu0_0>, <&pru0_1>, <&rtu0_1>;
+		firmware-name = "ti-pruss/am65x-pru0-prueth-fw.elf",
+				"ti-pruss/am65x-rtu0-prueth-fw.elf",
+				"ti-pruss/am65x-pru1-prueth-fw.elf",
+				"ti-pruss/am65x-rtu1-prueth-fw.elf";
 		mii-g-rt = <&icssg0_mii_g_rt>;
 		mii-rt = <&icssg0_mii_rt>;
 		dma-coherent;
