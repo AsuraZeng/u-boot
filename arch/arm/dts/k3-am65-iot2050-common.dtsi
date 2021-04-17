@@ -37,45 +37,45 @@
 		};
 	};
 
-// 	gpio_leds {
-// 		compatible = "gpio-leds";
-// 		pinctrl-names = "default";
-// 		pinctrl-0 = <&leds_pins_default>;
-// 		u-boot,dm-spl;
+	gpio_leds {
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+		pinctrl-0 = <&leds_pins_default>;
+		// u-boot,dm-spl;
 
-// 		status-led-red {
-// 			gpios = <&wkup_gpio0 32 GPIO_ACTIVE_HIGH>;
-// 			panic-indicator;
-// 			linux,default-trigger = "gpio";
-// 			u-boot,dm-spl;
-// 		};
+		status-led-red {
+			gpios = <&wkup_gpio0 32 GPIO_ACTIVE_HIGH>;
+			// panic-indicator;
+			// linux,default-trigger = "gpio";
+			// u-boot,dm-spl;
+		};
 
-// 		status-led-green {
-// 			gpios = <&wkup_gpio0 24 GPIO_ACTIVE_HIGH>;
-// 			linux,default-trigger = "gpio";
-// 			u-boot,dm-spl;
-// 		};
+		status-led-green {
+			gpios = <&wkup_gpio0 24 GPIO_ACTIVE_HIGH>;
+			// linux,default-trigger = "gpio";
+			// u-boot,dm-spl;
+		};
 
-// 		user-led0-red {
-// 			gpios = <&pcal9535_3 14 GPIO_ACTIVE_HIGH>;
-// 			linux,default-trigger = "gpio";
-// 		};
+		// user-led0-red {
+		// 	gpios = <&pcal9535_3 14 GPIO_ACTIVE_HIGH>;
+		// 	linux,default-trigger = "gpio";
+		// };
 
-// 		user-led0-green {
-// 			gpios = <&pcal9535_2 15 GPIO_ACTIVE_HIGH>;
-// 			linux,default-trigger = "gpio";
-// 		};
+		// user-led0-green {
+		// 	gpios = <&pcal9535_2 15 GPIO_ACTIVE_HIGH>;
+		// 	linux,default-trigger = "gpio";
+		// };
 
-// 		user-led1-red {
-// 			gpios = <&wkup_gpio0 17 GPIO_ACTIVE_HIGH>;
-// 			linux,default-trigger = "gpio";
-// 		};
+		// user-led1-red {
+		// 	gpios = <&wkup_gpio0 17 GPIO_ACTIVE_HIGH>;
+		// 	linux,default-trigger = "gpio";
+		// };
 
-// 		user-led1-green {
-// 			gpios = <&wkup_gpio0 22 GPIO_ACTIVE_HIGH>;
-// 			linux,default-trigger = "gpio";
-// 		};
-// 	};
+		// user-led1-green {
+		// 	gpios = <&wkup_gpio0 22 GPIO_ACTIVE_HIGH>;
+		// 	linux,default-trigger = "gpio";
+		// };
+	};
 
 // 	dp_refclk: clock {
 // 		compatible = "fixed-clock";
@@ -307,8 +307,6 @@
 
 	leds_pins_default: leds_pins_default {
 		pinctrl-single,pins = <
-			AM65X_WKUP_IOPAD(0x0014, PIN_OUTPUT, 7)  /* (T2) WKUP_GPIO0_17, used as user led1 red */
-			AM65X_WKUP_IOPAD(0x0028, PIN_OUTPUT, 7)  /* (R3) WKUP_GPIO0_22, used as user led1 green */
 			AM65X_WKUP_IOPAD(0x0030, PIN_OUTPUT, 7)  /* (R5) WKUP_GPIO0_24, used as status led red */
 			AM65X_WKUP_IOPAD(0x0050, PIN_OUTPUT, 7)  /* (N2) WKUP_GPIO0_32, used as status led green */
 		>;
