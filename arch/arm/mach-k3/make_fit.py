@@ -30,9 +30,6 @@ core_template = string.Template("""
 			load = <$loadaddr>;
 			entry = <0x0>;
 			data = /incbin/("u-boot-nodtb.bin$hs");
-			hash-1 {
-				algo = "sha256";
-			};
 		};
 
 		$dtbs
@@ -50,11 +47,6 @@ conf_template = string.Template("""
 			description = "$dtb";
 			firmware = "u-boot";
 			fdt = "$dtb.dtb";
-			signature {
-				algo = "sha256,rsa4096";
-				key-name-hint = "custMpk";
-				sign-images = "fdt", "firmware";
-			};
 		};
 	""")
 
@@ -65,9 +57,6 @@ fdt_template = string.Template("""
 			type = "flat_dt";
 			arch = "arm";
 			compression = "none";
-			hash-1 {
-				algo = "sha256";
-			};
 		};
 """)
 

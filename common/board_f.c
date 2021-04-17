@@ -835,6 +835,7 @@ static int initf_dm(void)
 	int ret;
 
 	bootstage_start(BOOTSTATE_ID_ACCUM_DM_F, "dm_f");
+	printf("initf dm\n");
 	ret = dm_init_and_scan(true);
 	bootstage_accum(BOOTSTATE_ID_ACCUM_DM_F);
 	if (ret)
@@ -1011,17 +1012,26 @@ static const init_fnc_t init_sequence_f[] = {
 
 void board_init_f(ulong boot_flags)
 {
+	printf("board init f comman\n");
 	gd->flags = boot_flags;
 	gd->have_console = 0;
 
 	if (initcall_run_list(init_sequence_f))
-		hang();
-
+		{
+			printf("%d \n",__LINE__);
+			printf("0");
+			hang();
+		}
+	printf("board init f comman\n");
 #if !defined(CONFIG_ARM) && !defined(CONFIG_SANDBOX) && \
 		!defined(CONFIG_EFI_APP) && !CONFIG_IS_ENABLED(X86_64) && \
 		!defined(CONFIG_ARC)
 	/* NOTREACHED - jump_to_copy() does not return */
-	hang();
+		{
+			printf("%d \n",__LINE__);
+						printf("1");
+			hang();
+		}
 #endif
 }
 
@@ -1054,7 +1064,11 @@ static const init_fnc_t init_sequence_f_r[] = {
 void board_init_f_r(void)
 {
 	if (initcall_run_list(init_sequence_f_r))
-		hang();
+		{
+			printf("%d \n",__LINE__);
+						printf("2");
+			hang();
+		}
 
 	/*
 	 * The pre-relocation drivers may be using memory that has now gone
@@ -1076,6 +1090,10 @@ void board_init_f_r(void)
 	(board_init_r + gd->reloc_off)((gd_t *)gd, gd->relocaddr);
 
 	/* NOTREACHED - board_init_r() does not return */
-	hang();
+		{
+			printf("%d \n",__LINE__);
+						printf("3");
+			hang();
+		}
 }
 #endif /* CONFIG_X86 */

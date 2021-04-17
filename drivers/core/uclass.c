@@ -683,7 +683,7 @@ int uclass_resolve_seq(struct udevice *dev)
 	ret = uclass_find_device_by_seq(dev->uclass->uc_drv->id, dev->req_seq,
 					false, &dup);
 	if (!ret) {
-		dm_warn("Device '%s': seq %d is in use by '%s'\n",
+		printf("Device '%s': seq %d is in use by '%s'\n",
 			dev->name, dev->req_seq, dup->name);
 	} else if (ret == -ENODEV) {
 		/* Our requested sequence number is available */

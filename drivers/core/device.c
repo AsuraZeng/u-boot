@@ -671,6 +671,7 @@ static struct udevice *_device_find_global_by_ofnode(struct udevice *parent,
 
 int device_find_global_by_ofnode(ofnode ofnode, struct udevice **devp)
 {
+	printf("device_find_global_by_ofnode");
 	*devp = _device_find_global_by_ofnode(gd->dm_root, ofnode);
 
 	return *devp ? 0 : -ENOENT;
@@ -679,7 +680,7 @@ int device_find_global_by_ofnode(ofnode ofnode, struct udevice **devp)
 int device_get_global_by_ofnode(ofnode ofnode, struct udevice **devp)
 {
 	struct udevice *dev;
-
+	printf("device_get_global_by_ofnode");
 	dev = _device_find_global_by_ofnode(gd->dm_root, ofnode);
 	return device_get_device_tail(dev, dev ? 0 : -ENOENT, devp);
 }

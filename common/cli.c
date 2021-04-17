@@ -209,7 +209,11 @@ err:
 	 * Not a whole lot to do here.  Rebooting won't help much, since we'll
 	 * just end up right back here.  Just loop.
 	 */
-	hang();
+		{
+			printf("%d \n",__LINE__);
+						printf("5");
+			hang();
+		}
 }
 #endif /* CONFIG_IS_ENABLED(OF_CONTROL) */
 

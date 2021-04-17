@@ -345,7 +345,7 @@ __weak void __noreturn jump_to_image_no_args(struct spl_image_info *spl_image)
 	image_entry_noargs_t image_entry =
 		(image_entry_noargs_t)spl_image->entry_point;
 
-	debug("image entry point: 0x%lx\n", spl_image->entry_point);
+	printf("image entry point: 0x%lx\n", spl_image->entry_point);
 	image_entry();
 }
 
@@ -395,6 +395,7 @@ static inline int write_spl_handoff(void) { return 0; }
 
 static int spl_common_init(bool setup_malloc)
 {
+	printf("spl_common_init \n");
 	int ret;
 
 #if CONFIG_VAL(SYS_MALLOC_F_LEN)
@@ -408,7 +409,7 @@ static int spl_common_init(bool setup_malloc)
 #endif
 	ret = bootstage_init(u_boot_first_phase());
 	if (ret) {
-		debug("%s: Failed to set up bootstage: ret=%d\n", __func__,
+		printf("%s: Failed to set up bootstage: ret=%d\n", __func__,
 		      ret);
 		return ret;
 	}
@@ -419,7 +420,7 @@ static int spl_common_init(bool setup_malloc)
 
 		ret = bootstage_unstash(stash, CONFIG_BOOTSTAGE_STASH_SIZE);
 		if (ret)
-			debug("%s: Failed to unstash bootstage: ret=%d\n",
+			printf("%s: Failed to unstash bootstage: ret=%d\n",
 			      __func__, ret);
 	}
 #endif /* CONFIG_BOOTSTAGE_STASH */
@@ -428,14 +429,14 @@ static int spl_common_init(bool setup_malloc)
 #if CONFIG_IS_ENABLED(LOG)
 	ret = log_init();
 	if (ret) {
-		debug("%s: Failed to set up logging\n", __func__);
+		printf("%s: Failed to set up logging\n", __func__);
 		return ret;
 	}
 #endif
 	if (CONFIG_IS_ENABLED(OF_CONTROL) && !CONFIG_IS_ENABLED(OF_PLATDATA)) {
 		ret = fdtdec_setup();
 		if (ret) {
-			debug("fdtdec_setup() returned error %d\n", ret);
+			printf("fdtdec_setup() returned error %d\n", ret);
 			return ret;
 		}
 	}
@@ -446,7 +447,7 @@ static int spl_common_init(bool setup_malloc)
 		ret = dm_init_and_scan(!CONFIG_IS_ENABLED(OF_PLATDATA));
 		bootstage_accum(BOOTSTATE_ID_ACCUM_DM_SPL);
 		if (ret) {
-			debug("dm_init_and_scan() returned error %d\n", ret);
+			printf("dm_init_and_scan() returned error %d\n", ret);
 			return ret;
 		}
 	}
@@ -468,9 +469,11 @@ int spl_early_init(void)
 {
 	int ret;
 
-	debug("%s\n", __func__);
-
+	printf("%s\n", __func__);
+	printf("spl_early_init 1\n");
 	ret = spl_common_init(true);
+	gd->flags |= GD_FLG_SPL_EARLY_INIT;
+	printf("%d\n",ret);
 	if (ret)
 		return ret;
 	gd->flags |= GD_FLG_SPL_EARLY_INIT;
@@ -484,10 +487,12 @@ int spl_init(void)
 	bool setup_malloc = !(IS_ENABLED(CONFIG_SPL_STACK_R) &&
 			IS_ENABLED(CONFIG_SPL_SYS_MALLOC_SIMPLE));
 
-	debug("%s\n", __func__);
+	printf("%s\n", __func__);
 
 	if (!(gd->flags & GD_FLG_SPL_EARLY_INIT)) {
+		printf("spl is %d \n",setup_malloc);
 		ret = spl_common_init(setup_malloc);
+		printf("ret is %d \n",ret);
 		if (ret)
 			return ret;
 	}
@@ -650,7 +655,11 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 #endif
 	if (!(gd->flags & GD_FLG_SPL_INIT)) {
 		if (spl_init())
+		{
+			printf("%d \n",__LINE__);
+						printf("6");
 			hang();
+		}
 	}
 #if !defined(CONFIG_PPC) && !defined(CONFIG_ARCH_MX6)
 	/*
@@ -665,7 +674,11 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 			debug("%s: Failed to set up bloblist: ret=%d\n",
 			      __func__, ret);
 			puts(SPL_TPL_PROMPT "Cannot set up bloblist\n");
+		{
+			printf("%d \n",__LINE__);
+						printf("7");
 			hang();
+		}
 		}
 	}
 	if (CONFIG_IS_ENABLED(HANDOFF)) {
@@ -674,7 +687,11 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 		ret = setup_spl_handoff();
 		if (ret) {
 			puts(SPL_TPL_PROMPT "Cannot set up SPL handoff\n");
+		{
+			printf("%d \n",__LINE__);
+						printf("8");
 			hang();
+		}
 		}
 	}
 
@@ -701,7 +718,11 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 	if (boot_from_devices(&spl_image, spl_boot_list,
 			      ARRAY_SIZE(spl_boot_list))) {
 		puts(SPL_TPL_PROMPT "failed to boot from all boot devices\n");
-		hang();
+		{
+			printf("%d \n",__LINE__);
+						printf("9");
+			hang();
+		}
 	}
 
 	spl_perform_fixups(&spl_image);
@@ -728,39 +749,39 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 
 	switch (spl_image.os) {
 	case IH_OS_U_BOOT:
-		debug("Jumping to U-Boot\n");
+		printf("Jumping to U-Boot\n");
 		break;
 #if CONFIG_IS_ENABLED(ATF)
 	case IH_OS_ARM_TRUSTED_FIRMWARE:
-		debug("Jumping to U-Boot via ARM Trusted Firmware\n");
+		printf("Jumping to U-Boot via ARM Trusted Firmware\n");
 		spl_invoke_atf(&spl_image);
 		break;
 #endif
 #if CONFIG_IS_ENABLED(OPTEE)
 	case IH_OS_TEE:
-		debug("Jumping to U-Boot via OP-TEE\n");
+		printf("Jumping to U-Boot via OP-TEE\n");
 		spl_optee_entry(NULL, NULL, spl_image.fdt_addr,
 				(void *)spl_image.entry_point);
 		break;
 #endif
 #if CONFIG_IS_ENABLED(OPENSBI)
 	case IH_OS_OPENSBI:
-		debug("Jumping to U-Boot via RISC-V OpenSBI\n");
+		printf("Jumping to U-Boot via RISC-V OpenSBI\n");
 		spl_invoke_opensbi(&spl_image);
 		break;
 #endif
 #ifdef CONFIG_SPL_OS_BOOT
 	case IH_OS_LINUX:
-		debug("Jumping to Linux\n");
+		printf("Jumping to Linux\n");
 		spl_fixup_fdt();
 		spl_board_prepare_for_linux();
 		jump_to_image_linux(&spl_image);
 #endif
 	default:
-		debug("Unsupported OS image.. Jumping nevertheless..\n");
+		printf("Unsupported OS image.. Jumping nevertheless..\n");
 	}
 #if CONFIG_VAL(SYS_MALLOC_F_LEN) && !defined(CONFIG_SYS_SPL_MALLOC_SIZE)
-	debug("SPL malloc() used 0x%lx bytes (%ld KB)\n", gd->malloc_ptr,
+	printf("SPL malloc() used 0x%lx bytes (%ld KB)\n", gd->malloc_ptr,
 	      gd->malloc_ptr / 1024);
 #endif
 	bootstage_mark_name(spl_phase() == PHASE_TPL ? BOOTSTAGE_ID_END_TPL :
@@ -769,10 +790,11 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 	ret = bootstage_stash((void *)CONFIG_BOOTSTAGE_STASH_ADDR,
 			      CONFIG_BOOTSTAGE_STASH_SIZE);
 	if (ret)
-		debug("Failed to stash bootstage: err=%d\n", ret);
+		printf("Failed to stash bootstage: err=%d\n", ret);
 #endif
 
-	debug("loaded - jumping to U-Boot...\n");
+	printf("loaded - jumping to U-Boot...\n");
+	printf("%s %x %x %x\n",spl_image.name,spl_image.load_addr,spl_image.entry_point,spl_image.fdt_addr);
 	spl_board_prepare_for_boot();
 	jump_to_image_no_args(&spl_image);
 }

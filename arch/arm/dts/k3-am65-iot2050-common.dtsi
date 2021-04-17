@@ -233,7 +233,7 @@
 };
 
 &wkup_pmx0 {
-	u-boot,dm-spl;
+	// u-boot,dm-spl;
 
 	wkup_i2c0_pins_default: wkup_i2c0_pins_default {
 		pinctrl-single,pins = <
@@ -329,7 +329,7 @@
 };
 
 &main_pmx0 {
-	u-boot,dm-spl;
+	// u-boot,dm-spl;
 
 	main_uart1_pins_default: main_uart1_pins_default {
 		pinctrl-single,pins = <
@@ -338,7 +338,7 @@
 			AM65X_IOPAD(0x0178, PIN_INPUT,  6)  /* (AD22) UART1_CTSn */
 			AM65X_IOPAD(0x017c, PIN_OUTPUT, 6)  /* (AC21) UART1_RTSn */
 		>;
-		u-boot,dm-spl;
+		// u-boot,dm-spl;
 	};
 
 	main_i2c3_pins_default: main_i2c3_pins_default {
